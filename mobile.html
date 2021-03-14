@@ -62,8 +62,12 @@
               ${safe(book.authors[0].names[0])}
             </div>
           </div>
+          ${cover ? `
+            <div class="w-16 h-16 flex items-center justify-center rounded-md">
+              <img src="${cover}" class="block object-contain p-0 m-0 w-full h-full">
+            </div>
+          ` : ""}
         </div>
-        ${cover ? `<img src="${cover}" class="block object-contain p-0 m-0 w-full h-80 pb-2">` : ""}
       </div>
     `)
   } 
