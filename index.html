@@ -1,0 +1,71 @@
+<body>
+<script>
+  loadAndRender()
+
+  function loadAndRender() {
+    loadBooks()
+      .then(books => books.map(renderBook))
+      .then(books => books.forEach(n => document.body.appendChild(n)))
+  }
+
+  function loadBooks() {
+    var authors = load("db/authors.json").then(r => r.authors)
+    var books = load("db/books.json").then(r => r.books)
+
+    return Promise.all([authors, books]).then(([authors, books]) => {
+      authors = authors.reduce((map, author) => (map[author.id] = author, map), {}) 
+      return books
+        .sort(sortByPublishedDesc)
+        .map(b => (b.authors = b.authors.map((a) => authors[a.ref]), b))
+    })
+  }
+
+  function sortByPublishedDesc(bookA, bookB) {
+    return Number(bookB.published[0]) - Number(bookA.published[0]);
+  }
+
+  function load(url, mapping) {
+    return fetch(url).then(r => r.json());
+  }
+
+  function renderBook(book) {
+    let cover = book.images && book.images[0] && book.images[0].replace("db://", "db/")
+
+    return toElement(`
+      <div class="event">
+        ${cover ? `<img src="${cover}" class="cover">` : ""}
+        <div class="description">
+          <p>${safe(book.published[0])}</p>
+          <p>${safe(book.title)}</p>
+          <p>${safe(book.authors[0].names[0])}</p>
+        </div>
+      </div>
+    `)
+  } 
+
+  function toElement(html) {
+    var element = document.createElement("div")
+    element.innerHTML = html 
+
+    return element.firstElementChild
+  }
+
+  function safe(raw) {
+    var element = document.createElement("div")
+    element.innerText = raw
+
+    return element.innerText
+  }
+</script>
+<style>
+* {box-sizing: border-box}
+:root {font-size: 14px}
+.event {
+  max-width: 42rem;
+  display: flex;
+}
+.cover {
+  width: 50%;
+  object-fit: cover;
+}
+</style>

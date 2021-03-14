@@ -1,0 +1,21 @@
+{
+  "authors": [
+    {
+      "id": "author:lev-tolstoi",
+      "names": [
+        "lev nikoláievich tolstói",
+        "lev tolstói"
+      ],
+      "birth": "1828-09-09",
+      "deadth": "1910-11-20"
+    },
+    {
+      "id": "author:juan-zorrilla-de-san-martin",
+      "names": [
+        "Juan Zorrilla de San Martín"
+      ],
+      "birth": "1828-09-09",
+      "deadth": "1910-11-20"
+    }
+  ]
+}

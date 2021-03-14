@@ -1,0 +1,106 @@
+{
+  "books": [
+    {
+      "id": "author:lev-tolstoi:book:infancia",
+      "title": "Infancia",
+      "published": ["1852"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-infancia.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:adolescencia",
+      "title": "Adolescencia",
+      "published": ["1854"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-adolescencia.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:juventud",
+      "title": "Juventud",
+      "published": ["1856"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-juventud.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:felicidad-conyugal",
+      "title": "Felicidad conyugal",
+      "published": ["1858"],
+      "authors": [{ "ref": "author:lev-tolstoi" }]
+    },
+    {
+      "id": "author:lev-tolstoi:book:los-cosacos",
+      "title": "Los cosacos",
+      "published": ["1863"],
+      "authors": [{ "ref": "author:lev-tolstoi" }]
+    },
+    {
+      "id": "author:lev-tolstoi:book:guerra-y-paz",
+      "title": "Guerra y paz",
+      "published": ["1865", "1866", "1867", "1868", "1869"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-guerra-y-paz.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:ana-karenina",
+      "title": "Ana Karenina",
+      "published": ["1875", "1876", "1877"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-ana-karenina.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:la-muerte-de-ivan-ilich",
+      "title": "La muerte de Iván Ilich",
+      "published": ["1886"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-la-muerte-de-ivan-ilich.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:la-sonata-a-kreutzer",
+      "title": "La sonata a Kreutzer",
+      "published": ["1889"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-la-sonata-a-kreutzer.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:resurreccion",
+      "title": "Resurrección",
+      "published": ["1899"],
+      "authors": [{ "ref": "author:lev-tolstoi" }],
+      "images": [
+        "db://images/author-lev-tolstoi-book-resurreccion.jpg"
+      ]
+    },
+    {
+      "id": "author:lev-tolstoi:book:el-cupon-falso",
+      "title": "El cupón falso",
+      "published": ["1911"],
+      "authors": [{ "ref": "author:lev-tolstoi" }]
+    },
+    {
+      "id": "author:lev-tolstoi:book:hadji-murat",
+      "title": "Hadji Murat",
+      "published": ["1912"],
+      "authors": [{ "ref": "author:lev-tolstoi" }]
+    },
+    {
+      "id": "author:juan-zorrilla-de-san-martin:book:tabare",
+      "title": "Tabaré",
+      "published": ["1888"],
+      "authors": [{ "ref": "author:juan-zorrilla-de-san-martin" }]
+    }
+  ]
+}
