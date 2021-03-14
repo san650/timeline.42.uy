@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <title>Timeline</title>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mx-auto max-w-screen-sm px-4"></div>
+</body>
+<script>
+  loadAndRender()
+
+  function loadAndRender() {
+    loadBooks()
+      .then(books => books.map(renderBook))
+      .then(books => books.forEach(n => document.querySelector('.container').appendChild(n)))
+  }
+
+  function loadBooks() {
+    var authors = load("db/authors.json").then(r => r.authors)
+    var books = load("db/books.json").then(r => r.books)
+
+    return Promise.all([authors, books]).then(([authors, books]) => {
+      authors = authors.reduce((map, author) => (map[author.id] = author, map), {}) 
+      return books
+        .sort(sortByPublishedDesc)
+        .map(b => (b.authors = b.authors.map((a) => authors[a.ref]), b))
+    })
+  }
+
+  function sortByPublishedDesc(bookA, bookB) {
+    return Number(bookB.published[0]) - Number(bookA.published[0]);
+  }
+
+  function load(url, mapping) {
+    return fetch(url).then(r => r.json());
+  }
+
+    function getColor(book) {
+    const colors = ['red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
+    const hash = Math.abs(book.authors[0].names[0].split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0));
+    console.log([book.authors[0].names[0], hash, colors.length, hash % colors.length]);
+    return colors[hash % colors.length];
+  }
+
+  function renderBook(book) {
+    let cover = book.images && book.images[0] && book.images[0].replace("db://", "db/")
+    let color = getColor(book);
+
+    return toElement(`
+      <div class="flex-col mb-2 bg-${color}-50 rounded-md font-serif">
+        <div class="flex">
+          <div class="w-16 h-16 bg-${color}-500 flex items-center justify-center text-xl font-bold text-white rounded-md">
+           ${safe(book.published[0])}
+          </div>
+          <div class="flex flex-col flex-grow">
+            <div class="flex-grow h-8 flex items-center font-bold pl-1 text-${color}-900">
+              ${safe(book.title)}
+            </div>
+            <div class="flex-grow h-8 items-center pl-1 text-${color}-600">
+              ${safe(book.authors[0].names[0])}
+            </div>
+          </div>
+        </div>
+        ${cover ? `<img src="${cover}" class="block object-contain p-0 m-0 w-full h-80 pb-2">` : ""}
+      </div>
+    `)
+  } 
+
+  function toElement(html) {
+    var element = document.createElement("div")
+    element.innerHTML = html 
+
+    return element.firstElementChild
+  }
+
+  function safe(raw) {
+    var element = document.createElement("div")
+    element.innerText = raw
+
+    return element.innerText
+  }
+</script>
+</html>
