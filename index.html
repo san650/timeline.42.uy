@@ -7,7 +7,9 @@
   <link rel="icon" type="image/png" href="favicon.png"/>
 </head>
 <body>
-  <div class="container mx-auto max-w-screen-sm px-4 py-2"></div>
+  <div class="container mx-auto max-w-screen-sm px-4 py-2">
+    <ul class="bg-gray-50 rounded-3xl p-2 sm:p-5 xl:p-6"></ul>
+  </div>
 
 </body>
 <script>
@@ -15,8 +17,8 @@
 
   function loadAndRender() {
     loadBooks()
-      .then(books => books.map(renderBook))
-      .then(books => books.forEach(n => document.querySelector('.container').appendChild(n)))
+      .then(books => books.map((b, i) => renderBook(b, i===0)))
+      .then(books => books.forEach(n => document.querySelector('.container ul').appendChild(n)))
   }
 
   function loadBooks() {
@@ -39,40 +41,56 @@
     return fetch(url).then(r => r.json());
   }
 
-    function getColor(book) {
+    function getColor(words) {
     const colors = ['red', 'yellow', 'green', 'blue', 'indigo', 'purple', 'pink'];
-    const hash = Math.abs(book.authors[0].names[0].split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0));
-    console.log([book.authors[0].names[0], hash, colors.length, hash % colors.length]);
+    const hash = Math.abs(words.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0));
     return colors[hash % colors.length];
   }
 
-  function renderBook(book) {
+  function renderBook(book, isFirst) {
     let cover = book.images && book.images[0] && book.images[0].replace("db://", "db/")
-    let color = getColor(book);
+
+    return renderEvent({
+      time: safe(book.published[0]),
+      title: `Libro <span class="text-blue-400">${safe(book.title)}</span>` ,
+      body: `Por <span class="text-blue-400">${safe(book.authors[0].names[0])}</span> fue publicado por primera vez`,
+      type: "book",
+      isFirst
+    });
+    // ${cover
+    //   ? `<img src="${cover}" class="block object-cover w-20 h-20 mr-6">`
+    //   : ``}
+  } 
+
+  function renderEvent({time, title, body, type, isFirst}) {
+    let color = getColor(type);
 
     return toElement(`
-      <div class="flex-col mb-2 bg-${color}-50 rounded-md font-serif">
-        <div class="flex">
-          <div class="w-16 h-16 bg-${color}-500 flex items-center justify-center text-xl font-bold text-white rounded-md">
-           ${safe(book.published[0])}
-          </div>
-          <div class="flex flex-col flex-grow">
-            <div class="flex-grow h-8 flex items-center font-bold pl-1 text-${color}-900">
-              ${safe(book.title)}
-            </div>
-            <div class="flex-grow h-8 items-center pl-1 text-${color}-600">
-              ${safe(book.authors[0].names[0])}
-            </div>
-          </div>
-          ${cover ? `
-            <div class="w-16 h-16 flex items-center justify-center rounded-md">
-              <img src="${cover}" class="block object-contain p-0 m-0 w-full h-full">
-            </div>
-          ` : ""}
-        </div>
-      </div>
-    `)
-  } 
+      <li>
+        <article class="grid md:grid-cols-8 xl:grid-cols-9 items-start relative rounded-xl p-3 sm:p-5 xl:p-6 overflow-hidden hover:bg-white">
+          <h3 class="font-semibold text-gray-900 md:col-start-3 md:col-span-6 xl:col-start-3 xl:col-span-7 mb-1 ml-9 md:ml-0">
+           ${title}
+          </h3>
+          <time datetime="${time}" class="md:col-start-1 md:col-span-2 row-start-1 md:row-end-3 flex items-center font-medium mb-1 md:mb-0">
+            ${isFirst
+              ? `<svg viewBox="0 0 12 12" class="fill-current w-3 h-3 mr-6 overflow-visible text-${color}-300">
+                  <circle cx="6" cy="6" r="6" fill="currentColor"></circle>
+                  <circle cx="6" cy="6" r="11" fill="none" stroke="currentColor" stroke-width="2"></circle>
+                  <path d="M 6 18 V 500" fill="none" stroke-width="2" stroke="currentColor" class="text-gray-200"></path>
+                </svg>`
+                  : `<svg viewBox="0 0 12 12" class="fill-current w-3 h-3 mr-6 overflow-visible text-${color}-300">
+                  <circle cx="6" cy="6" r="6" fill="currentColor"></circle>
+                  <path d="M 6 -6 V -30" fill="none" stroke-width="2" stroke="currentColor" class="text-gray-200"></path>
+                  <path d="M 6 18 V 500" fill="none" stroke-width="2" stroke="currentColor" class="text-gray-200"></path>
+                 </svg>`}
+            ${time}
+          </time>
+          <p class="md:col-start-3 md:col-span-6 xl:col-span-7 ml-9 md:ml-0 text-gray-600">
+            ${body}
+          </p>
+        </article>
+      </li>`);
+  }
 
   function toElement(html) {
     var element = document.createElement("div")
